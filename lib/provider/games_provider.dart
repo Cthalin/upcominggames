@@ -13,7 +13,7 @@ final dummyGame = Game(
   description: "Some description",
   website: "https://example.com",
   screenshots: [
-    "https://miro.medium.com/fit/c/176/176/1*8oa-e4oHBmsthYpHy5DzJw.png"
+    "https://miro.medium.com/fit/c/176/176/1*8oa-e4oHBmsthYpHy5DzJw.png",
   ],
 );
 
