@@ -83,4 +83,5 @@ class DefaultFirebaseOptions {
     authDomain: 'upcominggamesapp.firebaseapp.com',
     storageBucket: 'upcominggamesapp.appspot.com',
   );
+
 }
