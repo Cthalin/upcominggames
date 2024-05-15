@@ -1,1 +1,58 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"upcominggamesapp","appId":"1:196557612032:android:59acd5c16a661e51c824e5","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"upcominggamesapp","appId":"1:196557612032:ios:1121538777b3f0adc824e5","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"upcominggamesapp","appId":"1:196557612032:ios:1121538777b3f0adc824e5","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"upcominggamesapp","configurations":{"android":"1:196557612032:android:59acd5c16a661e51c824e5","ios":"1:196557612032:ios:1121538777b3f0adc824e5","macos":"1:196557612032:ios:1121538777b3f0adc824e5","web":"1:196557612032:web:d0f795279fa15e5ac824e5","windows":"1:196557612032:web:c938b44af51572d9c824e5"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "upcominggamesapp",
+          "appId": "1:196557612032:android:59acd5c16a661e51c824e5",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "upcominggamesapp",
+          "appId": "1:196557612032:ios:1121538777b3f0adc824e5",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "upcominggamesapp",
+          "appId": "1:196557612032:ios:1121538777b3f0adc824e5",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "upcominggamesapp",
+          "configurations": {
+            "android": "1:196557612032:android:59acd5c16a661e51c824e5",
+            "ios": "1:196557612032:ios:1121538777b3f0adc824e5",
+            "macos": "1:196557612032:ios:1121538777b3f0adc824e5",
+            "web": "1:196557612032:web:d0f795279fa15e5ac824e5",
+            "windows": "1:196557612032:web:c938b44af51572d9c824e5"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
+}
