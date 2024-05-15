@@ -16,7 +16,6 @@ class GameCard extends StatelessWidget {
     final router = AutoRouter.of(context);
     return Container(
       padding: const EdgeInsets.fromLTRB(Spacing.m, Spacing.m, Spacing.m, 0),
-      height: 250,
       width: double.maxFinite,
       child: Card(
         elevation: 5,
@@ -74,12 +73,9 @@ class GameCard extends StatelessWidget {
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               ListTile(
-                title: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    game.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                title: Text(
+                  game.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
                   game.platforms,

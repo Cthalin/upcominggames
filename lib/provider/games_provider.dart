@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:upcoming_games/models/game.dart';
 
@@ -25,16 +24,13 @@ class GamesNotifier extends StateNotifier<List<Game>> {
   GamesNotifier() : super([]);
 
   void loadGames({String? startDate, String? endDate}) async {
-    Timer(const Duration(seconds: 2), () {
-      state = <Game>[
-        dummyGame,
-        dummyGame,
-        dummyGame,
-        dummyGame,
-        dummyGame,
-        dummyGame,
-      ];
-    });
+    FirebaseFunctions functions = FirebaseFunctions.instance;
+    final callable = functions.httpsCallableFromUrl(
+      "https://europe-west1-upcominggamesapp.cloudfunctions.net/fetchGames",
+    );
+    final results = await callable();
+    List games = results.data['games'] as List;
+    state = games.map((game) => Game.fromJson(game)).toList();
   }
 
   Game getGameById(int id) {

@@ -20,4 +20,15 @@ class Game {
     this.website = "",
     List<String>? screenshots,
   }) : screenshots = screenshots ?? <String>[];
+
+  Game.fromJson(Map<dynamic, dynamic> json)
+      : id = json['id'].toDouble(),
+        name = json['name'],
+        date = json['date'],
+        bg = json['bg'],
+        platforms = json['platforms'],
+        rating = json['rating'].toDouble(),
+        description = json['description'],
+        website = json['website'],
+        screenshots = List<String>.from(json['screenshots'] ?? []);
 }

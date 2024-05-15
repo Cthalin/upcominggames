@@ -10,10 +10,10 @@
 import * as functions from "firebase-functions";
 import Game = require("./models/game");
 
-export const fetchGames = functions.region("europe-west1").https
-  .onRequest((request, response) => {
+exports.fetchGames = functions.region("europe-west1").https
+  .onCall((request) => {
     const games: Game[] = [dummyGame, dummyGame, dummyGame];
-    response.json(games);
+    return {games: games};
   });
 
 const dummyGame: Game = new Game(0, "Dummy Game",
