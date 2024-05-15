@@ -1,7 +1,6 @@
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class DatePickerController extends GetxController {
+class DatePickerController {
   var _currentDate = new DateTime.now().toString();
   var _currentMonth = new DateTime.now().month;
 
@@ -13,7 +12,6 @@ class DatePickerController extends GetxController {
     var formattedDate = "${dateParse.year}-${dateParse.month}-${dateParse.day}";
 
     _currentDate = formattedDate.toString();
-    update();
   }
 
   getLastDayOfMonth() {
@@ -33,12 +31,9 @@ class DatePickerController extends GetxController {
     _currentMonth++;
     // _currentDate =
     //     DateTime.parse(_currentDate).add(new Duration(days: 28)).toString();
-    _currentDate = new DateTime(
-            DateTime.parse(_currentDate).year,
-            DateTime.parse(_currentDate).month + 1,
-            1)
+    _currentDate = new DateTime(DateTime.parse(_currentDate).year,
+            DateTime.parse(_currentDate).month + 1, 1)
         .toString();
-    update();
   }
 
   previousMonth() {
@@ -46,12 +41,9 @@ class DatePickerController extends GetxController {
     // _currentDate = DateTime.parse(_currentDate)
     //     .subtract(new Duration(days: 28))
     //     .toString();
-    _currentDate = new DateTime(
-        DateTime.parse(_currentDate).year,
-        DateTime.parse(_currentDate).month - 1,
-        1)
+    _currentDate = new DateTime(DateTime.parse(_currentDate).year,
+            DateTime.parse(_currentDate).month - 1, 1)
         .toString();
-    update();
   }
 
   String get currentDate => _currentDate.toString();
