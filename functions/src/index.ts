@@ -8,21 +8,28 @@
  */
 
 import * as functions from "firebase-functions";
-import Game = require("./models/game");
+import {logger} from "firebase-functions";
+import {fetchGameDetails, fetchGamesAfterMs} from "./igdb";
 
 exports.fetchGames = functions.region("europe-west1").https
-  .onCall((request) => {
-    const games: Game[] = [dummyGame, dummyGame, dummyGame];
-    return {games: games};
+  .onCall(async () => {
+    logger.info("Fetching games");
+    return await fetchGamesAfterMs(1000);
   });
 
-const dummyGame: Game = new Game(0, "Dummy Game",
-  "2024-01-01",
-  "https://miro.medium.com/fit/c/176/176/1*8oa-e4oHBmsthYpHy5DzJw.png",
-  "PC, PS5, Xbox Series X",
-  0,
-  "Some description",
-  "https://example.com",
-  [
-    "https://miro.medium.com/fit/c/176/176/1*8oa-e4oHBmsthYpHy5DzJw.png",
-  ]);
+exports.fetchGameDetails = functions.region("europe-west1").https
+  .onCall(async (data, context) => {
+    logger.info("Fetching game details");
+    return await fetchGameDetails(data["gameId"]);
+  });
+
+// const dummyGame: Game = new Game(0, "Dummy Game",
+//   "2024-01-01",
+//   "https://miro.medium.com/fit/c/176/176/1*8oa-e4oHBmsthYpHy5DzJw.png",
+//   "PC, PS5, Xbox Series X",
+//   0,
+//   "Some description",
+//   "https://example.com",
+//   [
+//     "https://miro.medium.com/fit/c/176/176/1*8oa-e4oHBmsthYpHy5DzJw.png",
+//   ]);
