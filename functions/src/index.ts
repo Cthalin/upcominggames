@@ -14,7 +14,7 @@ import {fetchGameDetails, fetchGamesAfterMs} from "./igdb";
 exports.fetchGames = functions.region("europe-west1").https
   .onCall(async () => {
     logger.info("Fetching games");
-    return await fetchGamesAfterMs(1000);
+    return await fetchGamesAfterMs(Math.floor(new Date().getTime() / 1000));
   });
 
 exports.fetchGameDetails = functions.region("europe-west1").https
