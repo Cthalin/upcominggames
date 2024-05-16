@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:upcoming_games/models/game.dart';
+import 'package:upcoming_games/models/minimal_game.dart';
 import 'package:upcoming_games/pages/details_page.dart';
 import 'package:upcoming_games/pages/home_page.dart';
 import 'package:upcoming_games/pages/image_viewer_page.dart';

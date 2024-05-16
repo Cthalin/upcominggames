@@ -1,13 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:upcoming_games/models/game.dart';
+import 'package:upcoming_games/models/minimal_game.dart';
 import 'package:upcoming_games/theme.dart';
 
 import '../app_router.dart';
 
 class GameCard extends StatelessWidget {
-  final Game game;
+  final MinimalGame game;
 
   const GameCard(this.game, {super.key});
 
@@ -34,12 +34,12 @@ class GameCard extends StatelessWidget {
           highlightColor: Colors.teal,
           hoverColor: Colors.teal,
           onTap: () {
-            router.push(DetailsRoute(game: game));
+            router.push(DetailsRoute(minimalGame: game));
           },
           child: Column(
             children: [
               CachedNetworkImage(
-                imageUrl: game.bg,
+                imageUrl: game.cover,
                 imageBuilder: (context, imageProvider) => Container(
                   height: 160,
                   decoration: BoxDecoration(

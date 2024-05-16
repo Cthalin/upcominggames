@@ -19,7 +19,7 @@ abstract class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<DetailsRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: DetailsPage(game: args.game),
+        child: DetailsPage(minimalGame: args.minimalGame),
       );
     },
     ImageViewerRoute.name: (routeData) {
@@ -42,11 +42,11 @@ abstract class _$AppRouter extends RootStackRouter {
 /// [DetailsPage]
 class DetailsRoute extends PageRouteInfo<DetailsRouteArgs> {
   DetailsRoute({
-    required Game game,
+    required MinimalGame minimalGame,
     List<PageRouteInfo>? children,
   }) : super(
           DetailsRoute.name,
-          args: DetailsRouteArgs(game: game),
+          args: DetailsRouteArgs(minimalGame: minimalGame),
           initialChildren: children,
         );
 
@@ -57,13 +57,13 @@ class DetailsRoute extends PageRouteInfo<DetailsRouteArgs> {
 }
 
 class DetailsRouteArgs {
-  const DetailsRouteArgs({required this.game});
+  const DetailsRouteArgs({required this.minimalGame});
 
-  final Game game;
+  final MinimalGame minimalGame;
 
   @override
   String toString() {
-    return 'DetailsRouteArgs{game: $game}';
+    return 'DetailsRouteArgs{minimalGame: $minimalGame}';
   }
 }
 

@@ -19,9 +19,10 @@ class GamesList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final games = ref.watch(gamesProvider);
+    final games = ref.watch(gamesProvider).games;
+    final isLoading = ref.watch(gamesProvider).isLoading;
     return Expanded(
-      child: games.isEmpty
+      child: isLoading
           ? const Center(
               child: CupertinoActivityIndicator(
                 radius: 20,
