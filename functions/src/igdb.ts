@@ -64,7 +64,7 @@ let _fetchMinGameDetails = async (gameId: number) => {
 
 }
 
-function _mapMinimalGame(game: any, date: any) {
+function _mapMinimalGame(game: any) {
   return new MinimalGame(game.name, game.release_dates[0].human, `https:${game.cover.url}`, _formatPlatform(game.platforms));
 }
 
@@ -88,7 +88,7 @@ export let fetchGamesAfterMs = async (seconds: number) => {
     .then(async function (response: { data: any; }) {
       let games: MinimalGame[] = [];
       for (const element of response.data) {
-        games.push(_mapMinimalGame(element.game, element.date));
+        games.push(_mapMinimalGame(element.game));
       }
       return games;
     })
