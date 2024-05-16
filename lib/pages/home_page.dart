@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:upcoming_games/provider/date_provider.dart';
-import 'package:upcoming_games/provider/games_provider.dart';
 
 import '../widgets/games_list.dart';
 
@@ -18,7 +17,6 @@ class MyHomePage extends ConsumerStatefulWidget {
 class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    ref.watch(gamesProvider.notifier).loadGames();
     return Scaffold(
       appBar: AppBar(
         title: Text(

@@ -10,28 +10,33 @@ final gamesProvider = StateNotifierProvider<GamesNotifier, GamesState>((ref) {
 class GamesNotifier extends StateNotifier<GamesState> {
   GamesNotifier() : super(GamesState.initial());
 
-  void loadGames({String? startDate, String? endDate}) async {
+  Future<void> loadGames({String? startDate, String? endDate}) async {
     state = state.copyWith(isLoading: true);
     FirebaseFunctions functions = FirebaseFunctions.instance;
     final callable = functions.httpsCallableFromUrl(
       "https://europe-west1-upcominggamesapp.cloudfunctions.net/fetchGames",
     );
-    final results = await callable();
-    List games = results.data['games'] as List;
-    state = state.copyWith(
-      games: games.map((game) => MinimalGame.fromJson(game)).toList(),
-      isLoading: false,
+    await callable().then(
+      (result) => {
+        state = state.copyWith(
+          games: (result.data as List)
+              .map((game) => MinimalGame.fromJson(game))
+              .toList(),
+          isLoading: false,
+        ),
+      },
     );
   }
 
-  void getGameById(int id) async {
+  Future<void> getGameById(int id) async {
     FirebaseFunctions functions = FirebaseFunctions.instance;
     final callable = functions.httpsCallableFromUrl(
       "https://europe-west1-upcominggamesapp.cloudfunctions.net/fetchGameDetails",
     );
-    final result = await callable();
-    state = state.copyWith(
-      selectedGame: Game.fromJson(result.data),
+    await callable().then(
+      (value) => state = state.copyWith(
+        selectedGame: Game.fromJson(value.data),
+      ),
     );
   }
 
