@@ -39,7 +39,6 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     final game = ref.watch(gamesProvider).selectedGame;
-    // final isLoading = ref.watch(gamesProvider).isLoading;
     return game != null && !isLoading
         ? Scaffold(
             appBar: AppBar(
@@ -92,7 +91,7 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Website: ${game.website}",
+                                      "Website:",
                                       style:
                                           Theme.of(context).textTheme.bodySmall,
                                     ),
@@ -134,25 +133,19 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
                                           },
                                           child: Hero(
                                             tag: "screenshot",
-                                            child: Image.network(
-                                              game.screenshots[index],
+                                            child: CachedNetworkImage(
+                                              imageUrl: game.screenshots[index],
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                    const Text("Swipe for more"),
+                                    const Text(
+                                        "Swipe for more / Tap to enlarge"),
                                   ],
                                 ),
                               ),
                             ),
-                          TextButton(
-                            onPressed: () =>
-                                // Get.toNamed('/image',
-                                //     arguments: _.game.value.screenshots[0]),
-                                {},
-                            child: const Text("Show Screenshot"),
-                          ),
                         ],
                       ),
                     ],

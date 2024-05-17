@@ -27,10 +27,10 @@ const _getToken = async () => {
   };
 
   return axios(config)
-    .then(function (response: { data: any; }) {
+    .then(function(response: { data: any; }) {
       return response.data["access_token"];
     })
-    .catch(function (error: any) {
+    .catch(function(error: any) {
       console.log(error);
     });
 };
@@ -54,7 +54,8 @@ function _mapGame(game: any) {
     _formatPlatform(game.platforms),
     game.summary,
     game.url,
-    game.screenshots?.map((screenshot: any) => `https:${screenshot.url}`) || [],
+    game.screenshots?.map((screenshot: any) =>
+      `https:${screenshot.url}`.replace("thumb", "screenshot_big")) || [],
   );
 }
 
@@ -77,14 +78,14 @@ export const fetchGamesAfterMs = async (seconds: number) => {
   };
 
   return axios(config)
-    .then(async function (response: { data: any; }) {
+    .then(async function(response: { data: any; }) {
       const games: MinimalGame[] = [];
       for (const element of response.data) {
         games.push(_mapMinimalGame(element.game));
       }
       return games;
     })
-    .catch(function (error: any) {
+    .catch(function(error: any) {
       console.log(error);
     });
 };
@@ -107,10 +108,10 @@ export const fetchGameDetails = async (gameId: number) => {
   };
 
   return axios(config)
-    .then(async function (response: { data: any; }) {
+    .then(async function(response: { data: any; }) {
       return _mapGame(response.data[0]);
     })
-    .catch(function (error: any) {
+    .catch(function(error: any) {
       console.log(error);
       throw error;
     });
@@ -120,17 +121,17 @@ const _formatPlatform = (platforms: number[]) => {
   let platformString = "";
   platforms.forEach((platform) => {
     switch (platform) {
-      case 6:
-        platformString = platformString.concat(platformString ? ", PC" : "PC");
-        break;
-      case 167:
-        platformString = platformString.concat(platformString ? ", PS5" : "PS5");
-        break;
-      case 169:
-        platformString = platformString.concat(platformString ? ", Xbox Series X" : "Xbox Series X");
-        break;
-      default:
-        break;
+    case 6:
+      platformString = platformString.concat(platformString ? ", PC" : "PC");
+      break;
+    case 167:
+      platformString = platformString.concat(platformString ? ", PS5" : "PS5");
+      break;
+    case 169:
+      platformString = platformString.concat(platformString ? ", Xbox Series X" : "Xbox Series X");
+      break;
+    default:
+      break;
     }
   });
   return platformString;
