@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:upcoming_games/provider/games_provider.dart';
 
-import '../provider/games_provider.dart';
 import 'game_card.dart';
 
 class GamesList extends ConsumerStatefulWidget {
@@ -43,12 +43,21 @@ class _GamesListState extends ConsumerState<GamesList> {
                 radius: 20,
               ),
             )
-          : ListView.builder(
+          : GridView.builder(
               controller: widget.controller,
               itemCount: games.length,
               itemBuilder: (context, index) {
-                return GameCard(games[index]);
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+                  child: GameCard(games[index]),
+                );
               },
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 3 / 4,
+                crossAxisCount:
+                    2, // This specifies the number of items in a row
+              ),
             ),
     );
   }

@@ -69,7 +69,7 @@ function _mapMinimalGame(game: any) {
     game.id,
     game.name,
     game.release_dates[0].human,
-    `https:${game.cover.url}`,
+    `https:${game.cover.url}`.replace("thumb", "cover_big"),
     _formatPlatform(game.platforms),
   );
 }
@@ -79,7 +79,7 @@ export const fetchGamesAfterMs = async (seconds: number) => {
   const token = await _getToken();
   const data = `fields date,game.name,game.platforms,
   game.cover.url,game.release_dates.human; where date > ${seconds} 
-  & game.platforms = 6; sort date asc;`;
+  & game.platforms = 6; sort date asc; limit 50;`;
 
   const config = {
     method: "post",

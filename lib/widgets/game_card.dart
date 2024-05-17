@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:upcoming_games/models/minimal_game.dart';
-import 'package:upcoming_games/theme.dart';
 
 import '../app_router.dart';
 
@@ -15,74 +14,64 @@ class GameCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = AutoRouter.of(context);
     return Container(
-      padding: const EdgeInsets.fromLTRB(Spacing.m, Spacing.m, Spacing.m, 0),
-      width: double.maxFinite,
-      child: Card(
-        elevation: 5,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(10),
+          bottomLeft: Radius.circular(10),
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
         ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          splashColor: Colors.teal,
-          focusColor: Colors.teal,
-          highlightColor: Colors.teal,
-          hoverColor: Colors.teal,
-          onTap: () {
-            router.push(DetailsRoute(minimalGame: game));
-          },
-          child: Column(
-            children: [
-              CachedNetworkImage(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: InkWell(
+        splashColor: Colors.teal,
+        focusColor: Colors.teal,
+        highlightColor: Colors.teal,
+        hoverColor: Colors.teal,
+        onTap: () {
+          router.push(DetailsRoute(minimalGame: game));
+        },
+        child: Stack(
+          children: [
+            AspectRatio(
+              aspectRatio: 3 / 4,
+              child: CachedNetworkImage(
                 imageUrl: game.cover,
-                imageBuilder: (context, imageProvider) => Container(
-                  height: 160,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                        ),
-                      ),
-                      child: Text(
-                        game.date,
-                        style: const TextStyle(
-                          backgroundColor: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                fit: BoxFit.cover,
                 placeholder: (context, url) =>
                     const CircularProgressIndicator(),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-              ListTile(
-                title: Text(
-                  game.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                  ),
                 ),
-                subtitle: Text(
-                  game.platforms,
+                child: Text(
+                  game.date,
+                  style: const TextStyle(
+                    backgroundColor: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
