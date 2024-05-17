@@ -9,11 +9,11 @@ more details about it. I've started this project as a small showcase of my codin
 * Firebase cloud functions backend to communicate with the IGDB API
 * Image Viewer for screenshots
 * Caching game details
+* Persisted wishlist
 
 ### Planned Features
 
 * Search for games
-* Wishlist
 * filtering for time period
 
 ### Todos
@@ -28,3 +28,4 @@ more details about it. I've started this project as a small showcase of my codin
 * [auto_route](https://pub.dev/packages/auto_route)
 * [cached_network_image](https://pub.dev/packages/cached_network_image)
 * [cloud_functions](https://pub.dev/packages/cloud_functions)
+* [shared_preferences](https://pub.dev/packages/shared_preferences)

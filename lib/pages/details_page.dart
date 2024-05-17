@@ -6,6 +6,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:upcoming_games/app_router.dart';
 import 'package:upcoming_games/models/minimal_game.dart';
 import 'package:upcoming_games/provider/games_provider.dart';
+import 'package:upcoming_games/provider/wishlist_provider.dart';
 import 'package:upcoming_games/theme.dart';
 
 @RoutePage()
@@ -39,6 +40,7 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     final game = ref.watch(gamesProvider).selectedGame;
+    final wishlist = ref.watch(wishlistProvider);
     return game != null && !isLoading
         ? Scaffold(
             appBar: AppBar(
@@ -53,7 +55,36 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
                     children: [
                       Column(
                         children: [
-                          CachedNetworkImage(imageUrl: game.cover),
+                          Stack(
+                            children: [
+                              SizedBox(
+                                height: 300,
+                                width: double.maxFinite,
+                                child: CachedNetworkImage(imageUrl: game.cover),
+                              ),
+                              Positioned(
+                                right: 0,
+                                child: IconButton(
+                                  icon: Icon(
+                                    wishlist.contains(game.id)
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                  ),
+                                  onPressed: () {
+                                    if (wishlist.contains(game.id)) {
+                                      ref
+                                          .read(wishlistProvider.notifier)
+                                          .removeFromWishlist(game.id);
+                                    } else {
+                                      ref
+                                          .read(wishlistProvider.notifier)
+                                          .addToWishlist(game.id);
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                           Text(game.name),
                           Card(
                             elevation: 5,
@@ -155,8 +186,13 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
               ),
             ),
           )
-        : const Center(
-            child: CircularProgressIndicator(),
+        : Scaffold(
+            appBar: AppBar(
+              title: const Text('Loading...'),
+            ),
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
           );
   }
 }

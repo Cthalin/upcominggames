@@ -1,5 +1,5 @@
 class Game {
-  num id;
+  int id;
   String name;
   String date;
   String cover;
@@ -20,7 +20,7 @@ class Game {
   }) : screenshots = screenshots ?? <String>[];
 
   Game.fromJson(Map<dynamic, dynamic> json)
-      : id = json['id'].toDouble(),
+      : id = json['id'],
         name = json['name'],
         date = json['date'],
         cover = json['cover'],
