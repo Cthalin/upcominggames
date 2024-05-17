@@ -17,7 +17,6 @@ class _GamesListState extends ConsumerState<GamesList> {
   @override
   void initState() {
     super.initState();
-    // ref.read(gamesProvider.notifier).loadGames();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(gamesProvider.notifier).loadGames();
     });
@@ -33,7 +32,6 @@ class _GamesListState extends ConsumerState<GamesList> {
 
   @override
   Widget build(BuildContext context) {
-    // ref.read(gamesProvider.notifier).loadGames();
     final games = ref.watch(gamesProvider).games;
     final isLoading = ref.watch(gamesProvider).isLoading;
     return Expanded(
