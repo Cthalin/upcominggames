@@ -1,16 +1,30 @@
-# upcoming_games
+# Upcoming Games
 
-A new Flutter project.
+This is a quick flutter project that uses the IGDB API to display upcoming games. The user can click on a game to see
+more details about it. I've started this project as a small showcase of my coding style.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+* Display upcoming games
+* Firebase cloud functions backend to communicate with the IGDB API
+* Image Viewer for screenshots
+* Caching game details
 
-A few resources to get you started if this is your first Flutter project:
+### Planned Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* Search for games
+* Wishlist
+* filtering for time period
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Todos
+
+* cache auth token in BE
+* pagination for games
+* appealing visual design :sweat_smile:
+
+## Most relevant packages
+
+* [riverpod](https://pub.dev/packages/riverpod)
+* [auto_route](https://pub.dev/packages/auto_route)
+* [cached_network_image](https://pub.dev/packages/cached_network_image)
+* [cloud_functions](https://pub.dev/packages/cloud_functions)
