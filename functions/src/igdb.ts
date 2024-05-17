@@ -5,6 +5,7 @@ import axios from "axios";
 import qs = require("qs");
 import dotenv = require("dotenv");
 import MinimalGame = require("./models/minimal_game");
+import Game = require("./models/game");
 
 // TODO cache token
 const _getToken = async () => {
@@ -26,41 +27,11 @@ const _getToken = async () => {
   };
 
   return axios(config)
-    .then(function(response: { data: any; }) {
+    .then(function (response: { data: any; }) {
       return response.data["access_token"];
     })
-    .catch(function(error: any) {
+    .catch(function (error: any) {
       console.log(error);
-    });
-};
-
-const _fetchMinGameDetails = async (gameId: number) => {
-  const token = await _getToken();
-  const data = "fields name,platforms,cover,first_release_date; where id = " + gameId + ";";
-
-  const config = {
-    method: "post",
-    url: "https://api.igdb.com/v4/games",
-    headers: {
-      "Content-Type": "text/plain",
-      "Client-ID": "ivuffcyw4acdktkmf86716ylhlevs3",
-      "Authorization": "Bearer " + token,
-    },
-    data: data,
-  };
-
-  return axios(config)
-    .then(async function(response: { data: any; }) {
-      return new MinimalGame(
-        response.data[0].name,
-        response.data[0].first_release_date,
-        await _fetchCoverUrl(response.data[0].cover),
-        _formatPlatform(response.data[0].platforms),
-      );
-    })
-    .catch(function(error: any) {
-      console.log(error);
-      throw error;
     });
 };
 
@@ -71,6 +42,19 @@ function _mapMinimalGame(game: any) {
     game.release_dates[0].human,
     `https:${game.cover.url}`.replace("thumb", "cover_big"),
     _formatPlatform(game.platforms),
+  );
+}
+
+function _mapGame(game: any) {
+  return new Game(
+    game.id,
+    game.name,
+    game.release_dates[0].human,
+    `https:${game.cover.url}`.replace("thumb", "cover_big"),
+    _formatPlatform(game.platforms),
+    game.summary,
+    game.url,
+    game.screenshots?.map((screenshot: any) => `https:${screenshot.url}`) || [],
   );
 }
 
@@ -93,31 +77,27 @@ export const fetchGamesAfterMs = async (seconds: number) => {
   };
 
   return axios(config)
-    .then(async function(response: { data: any; }) {
+    .then(async function (response: { data: any; }) {
       const games: MinimalGame[] = [];
       for (const element of response.data) {
         games.push(_mapMinimalGame(element.game));
       }
       return games;
     })
-    .catch(function(error: any) {
+    .catch(function (error: any) {
       console.log(error);
     });
 };
 
 export const fetchGameDetails = async (gameId: number) => {
   logger.info("Fetching game details for " + gameId);
-  // TODO add details
-  return _fetchMinGameDetails(gameId);
-};
-
-const _fetchCoverUrl = async (coverId: number) => {
   const token = await _getToken();
-  const data = "fields url; where id = " + coverId + ";";
+  const data = "fields name,platforms,cover.url,release_dates.human,summary,url," +
+    "screenshots.url; where id = " + gameId + ";";
 
   const config = {
     method: "post",
-    url: "https://api.igdb.com/v4/covers",
+    url: "https://api.igdb.com/v4/games",
     headers: {
       "Content-Type": "text/plain",
       "Client-ID": "ivuffcyw4acdktkmf86716ylhlevs3",
@@ -127,11 +107,12 @@ const _fetchCoverUrl = async (coverId: number) => {
   };
 
   return axios(config)
-    .then(function(response: { data: any; }) {
-      return response.data[0].url;
+    .then(async function (response: { data: any; }) {
+      return _mapGame(response.data[0]);
     })
-    .catch(function(error: any) {
+    .catch(function (error: any) {
       console.log(error);
+      throw error;
     });
 };
 
@@ -139,17 +120,17 @@ const _formatPlatform = (platforms: number[]) => {
   let platformString = "";
   platforms.forEach((platform) => {
     switch (platform) {
-    case 6:
-      platformString = platformString.concat(platformString ? ", PC" : "PC");
-      break;
-    case 167:
-      platformString = platformString.concat(platformString ? ", PS5" : "PS5");
-      break;
-    case 169:
-      platformString = platformString.concat(platformString ? ", Xbox Series X" : "Xbox Series X");
-      break;
-    default:
-      break;
+      case 6:
+        platformString = platformString.concat(platformString ? ", PC" : "PC");
+        break;
+      case 167:
+        platformString = platformString.concat(platformString ? ", PS5" : "PS5");
+        break;
+      case 169:
+        platformString = platformString.concat(platformString ? ", Xbox Series X" : "Xbox Series X");
+        break;
+      default:
+        break;
     }
   });
   return platformString;

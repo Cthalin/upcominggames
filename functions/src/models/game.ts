@@ -2,9 +2,8 @@ class Game {
   id: number;
   name: string;
   date: string;
-  bg: string;
+  cover: string;
   platforms: string;
-  rating: number;
   description: string;
   website: string;
   screenshots: string[];
@@ -13,9 +12,8 @@ class Game {
     id = 0,
     name = "",
     date = "",
-    bg = "",
+    cover = "",
     platforms = "",
-    rating = 0,
     description = "",
     website = "",
     screenshots: string[] = []
@@ -23,9 +21,8 @@ class Game {
     this.id = id;
     this.name = name;
     this.date = date;
-    this.bg = bg;
+    this.cover = cover;
     this.platforms = platforms;
-    this.rating = rating;
     this.description = description;
     this.website = website;
     this.screenshots = screenshots;

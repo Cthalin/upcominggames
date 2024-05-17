@@ -33,9 +33,10 @@ class GamesNotifier extends StateNotifier<GamesState> {
     final callable = functions.httpsCallableFromUrl(
       "https://europe-west1-upcominggamesapp.cloudfunctions.net/fetchGameDetails",
     );
-    await callable().then(
+    await callable.call(<String, dynamic>{'gameId': id}).then(
       (value) => state = state.copyWith(
         selectedGame: Game.fromJson(value.data),
+        isLoading: false,
       ),
     );
   }

@@ -2,9 +2,8 @@ class Game {
   num id;
   String name;
   String date;
-  String bg;
+  String cover;
   String platforms;
-  double rating;
   String description;
   String website;
   List<String> screenshots;
@@ -13,9 +12,8 @@ class Game {
     this.id = 0,
     this.name = "",
     this.date = "",
-    this.bg = "",
+    this.cover = "",
     this.platforms = "",
-    this.rating = 0,
     this.description = "",
     this.website = "",
     List<String>? screenshots,
@@ -25,9 +23,8 @@ class Game {
       : id = json['id'].toDouble(),
         name = json['name'],
         date = json['date'],
-        bg = json['bg'],
+        cover = json['cover'],
         platforms = json['platforms'],
-        rating = json['rating'].toDouble(),
         description = json['description'],
         website = json['website'],
         screenshots = List<String>.from(json['screenshots'] ?? []);

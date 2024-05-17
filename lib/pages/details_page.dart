@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -8,15 +9,38 @@ import 'package:upcoming_games/provider/games_provider.dart';
 import 'package:upcoming_games/theme.dart';
 
 @RoutePage()
-class DetailsPage extends ConsumerWidget {
+class DetailsPage extends ConsumerStatefulWidget {
   final MinimalGame minimalGame;
 
   const DetailsPage({required this.minimalGame}) : super(key: null);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DetailsPage> createState() => _DetailsPageState();
+}
+
+class _DetailsPageState extends ConsumerState<DetailsPage> {
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        isLoading = true;
+      });
+      ref.read(gamesProvider.notifier).getGameById(widget.minimalGame.id).then(
+            (value) => setState(() {
+              isLoading = false;
+            }),
+          );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final game = ref.watch(gamesProvider).selectedGame;
-    return game != null
+    // final isLoading = ref.watch(gamesProvider).isLoading;
+    return game != null && !isLoading
         ? Scaffold(
             appBar: AppBar(
               title: Text(game.name),
@@ -30,7 +54,7 @@ class DetailsPage extends ConsumerWidget {
                     children: [
                       Column(
                         children: [
-                          Image.network(game.bg),
+                          CachedNetworkImage(imageUrl: game.cover),
                           Text(game.name),
                           Card(
                             elevation: 5,

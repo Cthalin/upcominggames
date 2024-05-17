@@ -18,7 +18,9 @@ exports.fetchGames = functions.region("europe-west1").https
   });
 
 exports.fetchGameDetails = functions.region("europe-west1").https
-  .onCall(async (data) => {
-    logger.info("Fetching game details");
-    return await fetchGameDetails(data["gameId"]);
+  .onCall(async (data, context) => {
+    const gameId = data.gameId;
+    logger.info("Fetching game details for game ID: " + gameId);
+    logger.warn("This is a warning message. " + data);
+    return await fetchGameDetails(gameId);
   });
