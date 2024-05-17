@@ -10,7 +10,14 @@ final gamesProvider = StateNotifierProvider<GamesNotifier, GamesState>((ref) {
 class GamesNotifier extends StateNotifier<GamesState> {
   GamesNotifier() : super(GamesState.initial());
 
+  /// Fetches a list of games from the server.
+  ///
+  /// This function optionally takes [startDate] and [endDate] as arguments and fetches the corresponding
+  /// list of games from the server within this date range. If the date range is not provided, it fetches all games.
+  ///
+  /// Returns a Future that completes when the games are loaded.
   Future<void> loadGames({String? startDate, String? endDate}) async {
+    // TODO respect the given date range
     try {
       state = state.copyWith(isLoading: true);
       FirebaseFunctions functions = FirebaseFunctions.instance;
@@ -32,6 +39,13 @@ class GamesNotifier extends StateNotifier<GamesState> {
     }
   }
 
+  /// Fetches the game details from the server.
+  ///
+  /// This function takes a [gameId] as an argument and fetches the corresponding
+  /// game details from the server. If the game details are not already loaded,
+  /// it makes a call to the Firebase function to fetch the game details.
+  ///
+  /// Returns a Future that completes with the game details.
   Future<void> getGameById(int id) async {
     final exists = state.loadedGames.any((element) => element.id == id);
     if (exists) {

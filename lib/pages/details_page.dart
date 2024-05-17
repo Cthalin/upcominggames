@@ -141,7 +141,8 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
                                       ),
                                     ),
                                     const Text(
-                                        "Swipe for more / Tap to enlarge"),
+                                      "Swipe for more / Tap to enlarge",
+                                    ),
                                   ],
                                 ),
                               ),
