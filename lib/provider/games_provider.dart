@@ -1,4 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:upcoming_games/models/game.dart';
 import 'package:upcoming_games/models/minimal_game.dart';
@@ -52,7 +53,7 @@ class GamesNotifier extends StateNotifier<GamesState> {
   /// it makes a call to the Firebase function to fetch the game details.
   ///
   /// Returns a Future that completes with the game details.
-  Future<void> getGameById(int id) async {
+  Future<void> loadGameById(int id) async {
     final exists = state.loadedGames.any((element) => element.id == id);
     if (exists) {
       state = state.copyWith(
@@ -60,7 +61,6 @@ class GamesNotifier extends StateNotifier<GamesState> {
             state.loadedGames.firstWhere((element) => element.id == id),
         isLoading: false,
       );
-      return;
     }
     try {
       state = state.copyWith(isLoading: true);
@@ -97,6 +97,10 @@ class GamesNotifier extends StateNotifier<GamesState> {
   /// Returns a Future that completes when the games are loaded.
   Future<void> loadMoreGames() async {
     await loadGames(offset: state.games.length - 1);
+  }
+
+  MinimalGame? getGameById(int id) {
+    return state.games.firstWhereOrNull((element) => element.id == id);
   }
 }
 

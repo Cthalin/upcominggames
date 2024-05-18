@@ -1,3 +1,5 @@
+import 'game.dart';
+
 class MinimalGame {
   int id;
   String name;
@@ -19,4 +21,11 @@ class MinimalGame {
         date = json['date'],
         cover = json['cover'],
         platforms = json['platforms'];
+
+  MinimalGame.fromGame(Game game)
+      : id = game.id,
+        name = game.name,
+        date = game.date,
+        cover = game.cover,
+        platforms = game.platforms;
 }

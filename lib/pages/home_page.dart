@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:upcoming_games/theme.dart';
 import 'package:upcoming_games/widgets/games_list.dart';
+import 'package:upcoming_games/widgets/wishlist.dart';
 
 @RoutePage()
 class MyHomePage extends ConsumerStatefulWidget {
@@ -13,17 +14,21 @@ class MyHomePage extends ConsumerStatefulWidget {
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
-  late ScrollController _controller;
+  late ScrollController _gamesController;
+  late ScrollController _wishlistController;
+  int selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
+    _gamesController = ScrollController();
+    _wishlistController = ScrollController();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _gamesController.dispose();
+    _wishlistController.dispose();
     super.dispose();
   }
 
@@ -60,10 +65,20 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
       ),
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: IndexedStack(
+            index: selectedIndex,
             children: <Widget>[
-              GamesList(controller: _controller),
+              Column(
+                children: [
+                  GamesList(controller: _gamesController),
+                ],
+              ),
+              const Text('Search'),
+              Column(
+                children: [
+                  Wishlist(controller: _wishlistController),
+                ],
+              ),
             ],
           ),
         ),
@@ -83,9 +98,11 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
             label: 'Wishlist',
           ),
         ],
-        currentIndex: 0, // TODO change
+        currentIndex: selectedIndex,
         selectedItemColor: Colors.teal,
-        onTap: null, // TODO implement
+        onTap: (int i) => setState(() {
+          selectedIndex = i;
+        }),
       ),
     );
   }

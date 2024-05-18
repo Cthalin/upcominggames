@@ -14,25 +14,37 @@ class GamesList extends ConsumerStatefulWidget {
 }
 
 class _GamesListState extends ConsumerState<GamesList> {
-  bool isLoading = true;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     widget.controller.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(gamesProvider.notifier).loadGames().then((_) {
+      if (ref.read(gamesProvider).games.isEmpty) {
         setState(() {
-          isLoading = false;
+          isLoading = true;
         });
-      });
+        ref.read(gamesProvider.notifier).loadGames().then((_) {
+          setState(() {
+            isLoading = false;
+          });
+        });
+      }
     });
   }
 
   _scrollListener() {
     if (widget.controller.position.pixels ==
-        widget.controller.position.maxScrollExtent - 200) {
-      ref.read(gamesProvider.notifier).loadMoreGames();
+        widget.controller.position.maxScrollExtent) {
+      setState(() {
+        isLoading = true;
+      });
+      ref.read(gamesProvider.notifier).loadMoreGames().then(
+            (_) => setState(() {
+              isLoading = false;
+            }),
+          );
     }
   }
 
@@ -48,7 +60,7 @@ class _GamesListState extends ConsumerState<GamesList> {
   Widget build(BuildContext context) {
     final games = ref.watch(gamesProvider).games;
     return Expanded(
-      child: isLoading
+      child: (isLoading && games.isEmpty)
           ? const Center(
               child: CupertinoActivityIndicator(
                 radius: 20,

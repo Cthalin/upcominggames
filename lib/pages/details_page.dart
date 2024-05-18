@@ -29,7 +29,7 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
       setState(() {
         isLoading = true;
       });
-      ref.read(gamesProvider.notifier).getGameById(widget.minimalGame.id).then(
+      ref.read(gamesProvider.notifier).loadGameById(widget.minimalGame.id).then(
             (value) => setState(() {
               isLoading = false;
             }),
