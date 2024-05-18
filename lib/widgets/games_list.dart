@@ -5,21 +5,35 @@ import 'package:upcoming_games/provider/games_provider.dart';
 import 'game_card.dart';
 
 class GamesList extends ConsumerStatefulWidget {
-  final ScrollController controller = ScrollController();
+  final ScrollController controller;
 
-  GamesList({super.key});
+  const GamesList({required this.controller, super.key});
 
   @override
   ConsumerState<GamesList> createState() => _GamesListState();
 }
 
 class _GamesListState extends ConsumerState<GamesList> {
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
+    widget.controller.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(gamesProvider.notifier).loadGames();
+      ref.read(gamesProvider.notifier).loadGames().then((_) {
+        setState(() {
+          isLoading = false;
+        });
+      });
     });
+  }
+
+  _scrollListener() {
+    if (widget.controller.position.pixels ==
+        widget.controller.position.maxScrollExtent - 200) {
+      ref.read(gamesProvider.notifier).loadMoreGames();
+    }
   }
 
   void toTop() {
@@ -33,7 +47,6 @@ class _GamesListState extends ConsumerState<GamesList> {
   @override
   Widget build(BuildContext context) {
     final games = ref.watch(gamesProvider).games;
-    final isLoading = ref.watch(gamesProvider).isLoading;
     return Expanded(
       child: isLoading
           ? const Center(
@@ -53,8 +66,7 @@ class _GamesListState extends ConsumerState<GamesList> {
               },
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 3 / 4,
-                crossAxisCount:
-                    2, // This specifies the number of items in a row
+                crossAxisCount: 2,
               ),
             ),
     );

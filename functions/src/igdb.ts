@@ -59,12 +59,12 @@ function _mapGame(game: any) {
   );
 }
 
-export const fetchGamesAfterMs = async (seconds: number) => {
+export const fetchGamesAfterMs = async (seconds: number, offset: number) => {
   logger.info("Fetching games after " + seconds + " seconds");
   const token = await _getToken();
   const data = `fields date,game.name,game.platforms,
   game.cover.url,game.release_dates.human; where date > ${seconds} 
-  & game.platforms = 6; sort date asc; limit 50;`;
+  & game.platforms = 6; sort date asc; limit 20; offset ${offset};`;
 
   const config = {
     method: "post",

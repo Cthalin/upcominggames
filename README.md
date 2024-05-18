@@ -10,6 +10,7 @@ more details about it. I've started this project as a small showcase of my codin
 * Image Viewer for screenshots
 * Caching game details
 * Persisted wishlist
+* Paginated list of games
 
 ### Planned Features
 
@@ -19,7 +20,6 @@ more details about it. I've started this project as a small showcase of my codin
 ### Todos
 
 * cache auth token in BE
-* pagination for games
 * appealing visual design :sweat_smile:
 
 ## Most relevant packages

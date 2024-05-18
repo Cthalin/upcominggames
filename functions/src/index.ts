@@ -20,9 +20,10 @@ import {fetchGameDetails, fetchGamesAfterMs} from "./igdb";
  * Returns a Promise that completes when the games are fetched.
  */
 exports.fetchGames = functions.region("europe-west1").https
-  .onCall(async () => {
+  .onCall(async (data) => {
+    const offset = data.offset ?? 0;
     logger.info("Fetching games");
-    return await fetchGamesAfterMs(Math.floor(new Date().getTime() / 1000));
+    return await fetchGamesAfterMs(Math.floor(new Date().getTime() / 1000), offset);
   });
 
 /**
@@ -34,7 +35,7 @@ exports.fetchGames = functions.region("europe-west1").https
  * Returns a Promise that completes when the game details are fetched.
  */
 exports.fetchGameDetails = functions.region("europe-west1").https
-  .onCall(async (data, context) => {
+  .onCall(async (data) => {
     const gameId = data.gameId;
     logger.info("Fetching game details for game ID: " + gameId);
     logger.warn("This is a warning message. " + data);
