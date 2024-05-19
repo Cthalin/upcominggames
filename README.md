@@ -16,6 +16,8 @@ more details about it. I've started this project as a small showcase of my codin
 ### Planned Features
 
 * filtering for time period
+* filtering for platforms
+* notifications for release dates
 
 ### Todos
 
