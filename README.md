@@ -11,10 +11,10 @@ more details about it. I've started this project as a small showcase of my codin
 * Caching game details
 * Persisted wishlist
 * Paginated list of games
+* Search for games
 
 ### Planned Features
 
-* Search for games
 * filtering for time period
 
 ### Todos
