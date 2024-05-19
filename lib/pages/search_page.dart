@@ -21,8 +21,16 @@ class SearchPageState extends ConsumerState<SearchPage> {
       appBar: AppBar(
         title: TextField(
           controller: _searchController,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             hintText: 'Search games...',
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                ref
+                    .read(searchProvider.notifier)
+                    .search(_searchController.text);
+              },
+            ),
           ),
           onSubmitted: (query) {
             ref.read(searchProvider.notifier).search(query);
