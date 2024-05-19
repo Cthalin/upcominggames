@@ -10,18 +10,6 @@ class SearchProvider extends StateNotifier<SearchState> {
   SearchProvider() : super(SearchState.initial());
 
   Future<void> search(String query) async {
-    List<MinimalGame> results = await Future.delayed(
-      const Duration(seconds: 2),
-      () => List<MinimalGame>.generate(
-        10,
-        (index) => MinimalGame(
-          id: index,
-          name: 'Game $index',
-          cover: 'https://via.placeholder.com/150',
-          platforms: 'PC',
-        ),
-      ),
-    );
     try {
       state = state.copyWith(isLoading: true);
       FirebaseFunctions functions = FirebaseFunctions.instance;
