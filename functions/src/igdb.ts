@@ -39,8 +39,8 @@ function _mapMinimalGame(game: any) {
   return new MinimalGame(
     game.id,
     game.name,
-    game.release_dates[0].human,
-    `https:${game.cover.url}`.replace("thumb", "cover_big"),
+    game.release_dates[0]?.human != null ? game.release_dates[0]?.human : "unknown",
+    game.cover?.url != null ? `https:${game.cover.url}`.replace("thumb", "cover_big") : "",
     _formatPlatform(game.platforms),
   );
 }
@@ -135,4 +135,38 @@ const _formatPlatform = (platforms: number[]) => {
     }
   });
   return platformString;
+};
+
+export const searchGames = async (query: string) => {
+  logger.info("Searching for games with query " + query);
+  const token = await _getToken();
+  const data = `fields game.name,game.platforms,game.cover.url,game.release_dates.human; search "${query}"; limit 50;`;
+
+  const config = {
+    method: "post",
+    url: "https://api.igdb.com/v4/search",
+    headers: {
+      "Content-Type": "text/plain",
+      "Client-ID": "ivuffcyw4acdktkmf86716ylhlevs3",
+      "Authorization": "Bearer " + token,
+    },
+    data: data,
+  };
+
+  return axios(config)
+    .then(async function(response: { data: any; }) {
+      const games: MinimalGame[] = [];
+      for (const element of response.data) {
+        if (element.game != null &&
+          element.game.platforms != null &&
+          element.game.cover != null &&
+          element.game.release_dates != null) {
+          games.push(_mapMinimalGame(element.game));
+        }
+      }
+      return games;
+    })
+    .catch(function(error: any) {
+      console.log(error);
+    });
 };

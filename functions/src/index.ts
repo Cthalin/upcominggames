@@ -9,7 +9,7 @@
 
 import * as functions from "firebase-functions";
 import {logger} from "firebase-functions";
-import {fetchGameDetails, fetchGamesAfterMs} from "./igdb";
+import {fetchGameDetails, fetchGamesAfterMs, searchGames} from "./igdb";
 
 /**
  * Fetches a list of games from the IGDB API.
@@ -38,6 +38,20 @@ exports.fetchGameDetails = functions.region("europe-west1").https
   .onCall(async (data) => {
     const gameId = data.gameId;
     logger.info("Fetching game details for game ID: " + gameId);
-    logger.warn("This is a warning message. " + data);
     return await fetchGameDetails(gameId);
+  });
+
+/**
+ * Searches for games in the IGDB API.
+ *
+ * This function is triggered by an HTTPS call and searches for games in the IGDB API.
+ * The games are searched based on the search term provided in the data parameter.
+ *
+ * Returns a Promise that completes when the search is done and the results are fetched.
+ */
+exports.searchGames = functions.region("europe-west1").https
+  .onCall(async (data) => {
+    const searchTerm = data.searchTerm;
+    logger.info("Searching for: " + searchTerm);
+    return await searchGames(searchTerm);
   });

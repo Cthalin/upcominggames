@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:upcoming_games/pages/search_page.dart';
 import 'package:upcoming_games/theme.dart';
 import 'package:upcoming_games/widgets/games_list.dart';
 import 'package:upcoming_games/widgets/wishlist.dart';
@@ -73,7 +74,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                   GamesList(controller: _gamesController),
                 ],
               ),
-              const Text('Search'),
+              const SearchPage(),
               Column(
                 children: [
                   Wishlist(controller: _wishlistController),

@@ -20,6 +20,7 @@ more details about it. I've started this project as a small showcase of my codin
 ### Todos
 
 * cache auth token in BE
+* use e.g. `i18n` for localization
 * appealing visual design :sweat_smile:
 
 ## Most relevant packages
