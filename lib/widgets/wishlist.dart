@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:upcoming_games/provider/games_provider.dart';
 import 'package:upcoming_games/provider/wishlist_provider.dart';
 
@@ -39,10 +40,8 @@ class _WishlistState extends ConsumerState<Wishlist> {
         .toList();
     return Expanded(
       child: isLoading
-          ? const Center(
-              child: CupertinoActivityIndicator(
-                radius: 20,
-              ),
+          ? Center(
+              child: Lottie.asset('assets/animations/loading.json'),
             )
           : GridView.builder(
               controller: widget.controller,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:upcoming_games/provider/search_provider.dart';
 import 'package:upcoming_games/widgets/game_card.dart';
 
@@ -40,15 +41,20 @@ class SearchPageState extends ConsumerState<SearchPage> {
       body: Consumer(
         builder: (context, watch, child) {
           final searchResults = ref.watch(searchProvider).games;
-          return ListView.builder(
-            itemCount: searchResults.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(Spacing.xl),
-                child: GameCard(searchResults[index]),
-              );
-            },
-          );
+          final isLoading = ref.watch(searchProvider).isLoading;
+          return isLoading
+              ? Center(
+                  child: Lottie.asset('assets/animations/loading.json'),
+                )
+              : ListView.builder(
+                  itemCount: searchResults.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(Spacing.xl),
+                      child: GameCard(searchResults[index]),
+                    );
+                  },
+                );
         },
       ),
     );

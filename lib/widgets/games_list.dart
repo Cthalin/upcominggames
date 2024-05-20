@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:upcoming_games/provider/games_provider.dart';
 
 import 'game_card.dart';
@@ -61,10 +62,8 @@ class _GamesListState extends ConsumerState<GamesList> {
     final games = ref.watch(gamesProvider).games;
     return Expanded(
       child: (isLoading && games.isEmpty)
-          ? const Center(
-              child: CupertinoActivityIndicator(
-                radius: 20,
-              ),
+          ? Center(
+              child: Lottie.asset('assets/animations/loading.json'),
             )
           : GridView.builder(
               controller: widget.controller,
