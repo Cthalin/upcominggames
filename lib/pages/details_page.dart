@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:lottie/lottie.dart';
 import 'package:upcoming_games/app_router.dart';
 import 'package:upcoming_games/models/minimal_game.dart';
 import 'package:upcoming_games/provider/games_provider.dart';
@@ -190,8 +191,8 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
             appBar: AppBar(
               title: const Text('Loading...'),
             ),
-            body: const Center(
-              child: CircularProgressIndicator(),
+            body: Center(
+              child: Lottie.asset('assets/animations/loading.json'),
             ),
           );
   }
