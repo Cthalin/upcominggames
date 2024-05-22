@@ -14,10 +14,12 @@ class Spacing {
 
 final theme = ThemeData(
   useMaterial3: true,
+  primarySwatch: Colors.blueGrey,
+  primaryColor: Colors.white,
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.teal,
     // ···
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
   ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(
