@@ -6,6 +6,7 @@ import 'package:upcoming_games/models/minimal_game.dart';
 import 'package:upcoming_games/provider/wishlist_provider.dart';
 
 import '../app_router.dart';
+import '../provider/game_by_id_provider.dart';
 
 class GameCard extends ConsumerWidget {
   final MinimalGame game;
@@ -15,7 +16,7 @@ class GameCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = AutoRouter.of(context);
-    final isWishlisted = ref.watch(wishlistProvider).contains(game.id);
+    final isWishlisted = ref.watch(gameIsOnWishlistProvider(game.id));
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -58,11 +59,12 @@ class GameCard extends ConsumerWidget {
             Positioned(
               right: 0,
               child: IconButton(
-                icon:
-                    Icon(isWishlisted ? Icons.favorite : Icons.favorite_border),
+                icon: Icon(
+                  isWishlisted == true ? Icons.favorite : Icons.favorite_border,
+                ),
                 color: Colors.white,
                 onPressed: () {
-                  isWishlisted
+                  isWishlisted == true
                       ? ref
                           .read(wishlistProvider.notifier)
                           .removeFromWishlist(game.id)

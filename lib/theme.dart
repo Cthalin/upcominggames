@@ -18,7 +18,6 @@ final theme = ThemeData(
   primaryColor: Colors.white,
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.teal,
-    // ···
     brightness: Brightness.light,
   ),
   textTheme: const TextTheme(
@@ -26,7 +25,6 @@ final theme = ThemeData(
       fontSize: 72,
       fontWeight: FontWeight.bold,
     ),
-    // ···
     titleLarge: TextStyle(
       fontSize: 30,
       fontStyle: FontStyle.italic,
