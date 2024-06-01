@@ -5,54 +5,42 @@ import 'package:upcoming_games/models/game.dart';
 import 'package:upcoming_games/models/minimal_game.dart';
 
 final gamesProvider = StateNotifierProvider<GamesNotifier, GamesState>((ref) {
-  return GamesNotifier();
+  return GamesNotifier(firebaseFunctions: FirebaseFunctions.instance);
 });
 
 class GamesNotifier extends StateNotifier<GamesState> {
-  GamesNotifier() : super(GamesState.initial());
+  final FirebaseFunctions firebaseFunctions;
 
-  /// Fetches a list of games from the server.
-  ///
-  /// This function optionally takes [startDate] and [endDate] as arguments and fetches the corresponding
-  /// list of games from the server within this date range. If the date range is not provided, it fetches all games.
-  ///
-  /// Returns a Future that completes when the games are loaded.
+  GamesNotifier({required this.firebaseFunctions})
+      : super(GamesState.initial());
+
   Future<void> loadGames({
     String? startDate,
     String? endDate,
     int? offset,
   }) async {
-    // TODO respect the given date range
     try {
       state = state.copyWith(isLoading: true);
-      FirebaseFunctions functions = FirebaseFunctions.instance;
-      final callable = functions.httpsCallableFromUrl(
+      final callable = firebaseFunctions.httpsCallableFromUrl(
         "https://europe-west1-upcominggamesapp.cloudfunctions.net/fetchGames",
       );
-      await callable.call(<String, dynamic>{'offset': offset}).then(
-        (result) => {
-          state = state.copyWith(
-            games: [
-              ...state.games,
-              ...(result.data as List)
-                  .map((game) => MinimalGame.fromJson(game)),
-            ],
-            isLoading: false,
-          ),
-        },
+      final response = await callable.call(<String, dynamic>{
+        'startDate': startDate,
+        'endDate': endDate,
+        'offset': offset,
+      });
+      state = state.copyWith(
+        games: [
+          ...state.games,
+          ...(response.data as List).map((game) => MinimalGame.fromJson(game)),
+        ],
+        isLoading: false,
       );
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
-  /// Fetches the game details from the server.
-  ///
-  /// This function takes a [gameId] as an argument and fetches the corresponding
-  /// game details from the server. If the game details are not already loaded,
-  /// it makes a call to the Firebase function to fetch the game details.
-  ///
-  /// Returns a Future that completes with the game details.
   Future<void> loadGameById(int id) async {
     final exists = state.loadedGames.any((element) => element.id == id);
     if (exists) {
@@ -64,8 +52,7 @@ class GamesNotifier extends StateNotifier<GamesState> {
     }
     try {
       state = state.copyWith(isLoading: true);
-      FirebaseFunctions functions = FirebaseFunctions.instance;
-      final callable = functions.httpsCallableFromUrl(
+      final callable = firebaseFunctions.httpsCallableFromUrl(
         "https://europe-west1-upcominggamesapp.cloudfunctions.net/fetchGameDetails",
       );
       await callable.call(<String, dynamic>{'gameId': id}).then(
@@ -81,20 +68,29 @@ class GamesNotifier extends StateNotifier<GamesState> {
   }
 
   void loadNextMonth() {
-    /* TODO implement */
+    final DateTime firstDayNextMonth =
+        DateTime(DateTime.now().year, DateTime.now().month + 1, 1);
+    final DateTime lastDayNextMonth =
+        DateTime(DateTime.now().year, DateTime.now().month + 2, 0);
+
+    loadGames(
+      startDate: firstDayNextMonth.toIso8601String(),
+      endDate: lastDayNextMonth.toIso8601String(),
+    );
   }
 
   void loadPreviousMonth() {
-    /* TODO implement*/
+    final DateTime firstDayPrevMonth =
+        DateTime(DateTime.now().year, DateTime.now().month - 1, 1);
+    final DateTime lastDayPrevMonth =
+        DateTime(DateTime.now().year, DateTime.now().month, 0);
+
+    loadGames(
+      startDate: firstDayPrevMonth.toIso8601String(),
+      endDate: lastDayPrevMonth.toIso8601String(),
+    );
   }
 
-  /// Fetches more games from the server and adds them to the current list of games.
-  ///
-  /// This function calls the `loadGames` function with an offset equal to the current number of games minus one.
-  /// The offset is used to fetch the next page of games from the server.
-  /// The fetched games are then added to the current list of games.
-  ///
-  /// Returns a Future that completes when the games are loaded.
   Future<void> loadMoreGames() async {
     await loadGames(offset: state.games.length - 1);
   }
